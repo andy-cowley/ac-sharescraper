@@ -1,0 +1,54 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  /scrape:
+    get:
+      operationId: "scrape.get_latest_prices"
+      tags:
+        - "Scrape"
+      summary: "Scrapes the London Stock Exchange for current Next share prices"
+      description: "Scrapes share prices"
+      responses:
+        200:
+          description: "Successful scrape"
+          schema:
+            type: array
+            items:
+              properties:
+                current_price:
+                  type: string
+                total_cashout:
+                  type: string
+                update_time:
+                  type: string
+  /history:
+    get:
+      operationId: "scrape.get_posts_from_db"
+      tags:
+        - "Get"
+      summary: "Gets the historyt pf prices from the databse"
+      description: "Returns historical prices"
+      responses:
+        200:
+          description: "Successful get"
+          schema:
+            type: array
+            items:
+              properties:
+                current_price:
+                  type: string
+                total_cashout:
+                  type: string
+                update_time:
+                  type: string          
