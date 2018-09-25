@@ -52,3 +52,24 @@ paths:
                   type: string
                 update_time:
                   type: string          
+
+  /refresh-db:
+    get:
+        operationId: "scrape.refresh_db"
+        tags:
+          - "Get"
+        summary: "refreshes the database"
+        description: "Gets latest price and updates DB"
+        responses:
+          200:
+            description: "Successful get"
+            schema:
+              type: array
+              items:
+                properties:
+                  current_price:
+                    type: string
+                  total_cashout:
+                    type: string
+                  update_time:
+                    type: string  

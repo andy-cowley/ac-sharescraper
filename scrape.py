@@ -5,7 +5,7 @@ from pymongo import MongoClient
 def get_latest_prices():
     res = requests.get('https://www.londonstockexchange.com/exchange/prices-and-markets/stocks/summary/company-summary/GB0032089863GBGBXSET1.html')
     res.raise_for_status()
-    soup = bs4.BeautifulSoup(res.text, features="lxml")
+    soup = bs4.BeautifulSoup(res.text)
     table = soup.select('table')[0]
     price = (table.find_all('td')[1]).get_text()
     price = price.replace(',', '')
@@ -25,7 +25,7 @@ def get_latest_prices():
     return json.dumps(latest_prices)
 
 def post_to_db(post):
-    client = MongoClient()
+    client = MongoClient('mongo', 27017)
     db = client.sharescraper
     posts = db.posts
 
@@ -33,7 +33,7 @@ def post_to_db(post):
     return result
 
 def get_posts_from_db():
-    client = MongoClient()
+    client = MongoClient('mongo', 27017)
     db = client.sharescraper
     posts = db.posts
 
@@ -49,6 +49,11 @@ def get_posts_from_db():
     result = json.dumps(result)
 
     return result
+
+
+def refresh_db():
+    post_to_db(get_latest_prices())
+    return 
 
 
 if __name__ == "__main__":

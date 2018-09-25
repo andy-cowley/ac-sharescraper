@@ -1,0 +1,14 @@
+version: '2'
+services:
+    mongo:
+        image: mongo
+        hostname: mongo
+        ports:
+            - '27017:27017'
+    
+    sharescraper-api:
+        build: .
+        image: ac-sharescraper
+        hostname: sharescraper-api
+        ports: 
+            - '5000:5000'
