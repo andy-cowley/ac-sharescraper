@@ -69,6 +69,97 @@ spec:
             value: mongo
 
 ---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: 
+  name: sharescraper-ui
+  labels:
+    app: ac-sharescraper
+    module: ui
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ac-sharescraper
+        module: ui
+    spec:
+      containers:
+      - name: sharescraper-ui
+        image: andycowley/sharescraper-ui:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        -   name: API
+            value: "http://api:5000"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: NodePort
+  selector:
+    app: ac-sharescraper
+    module: ui
+
+---
+
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: sharescraper
+  namespace: default
+spec:
+  secretName: sharescraper
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: sharescraper.andycowley.uk
+  dnsNames:
+  - sharescraper.andycowley.uk
+  acme:
+    config:
+    - dns01:
+        provider: clouddns
+      domains:
+      - sharescraper.andycowley.uk
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ui
+  labels:
+    app: ac-shaescraper
+    module: ui
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"  
+    certmanager.k8s.io/issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: "nginx"  
+spec:
+  tls:
+  - secretName: sharescraper
+    hosts:
+    - sharescraper.andycowley.uk
+  rules:
+  - host: sharescraper.andycowley.uk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: ui
+          servicePort: 8080
+---
 # Headless Service mongo
 apiVersion: v1
 kind: Service
