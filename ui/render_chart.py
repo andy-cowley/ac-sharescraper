@@ -1,12 +1,15 @@
 from flask import Flask, Markup, render_template
-import scrape, json
+import json, requests, os
 
 app = Flask(__name__)
 
 labels = []
 values = []
 
-data = json.loads(scrape.get_posts_from_db())
+api = os.environ['API']
+url = "%s/api/history" % api
+payload = requests.get(url)
+data = json.loads(json.loads(payload.text))
 
 for entry in data['history']:
     label = entry['update_time']
@@ -19,11 +22,12 @@ def chart():
     return render_template( 
                             'chart.html', 
                             title="What are your shares worth now?", 
-                            labels=labels, 
-                            values=values,
+                            labels=labels[::-1], 
+                            values=values[::-1],
                             max=15000,
                             min=10500
                             )
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)
+    # print(type(data), data)
