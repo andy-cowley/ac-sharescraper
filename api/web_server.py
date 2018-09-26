@@ -10,11 +10,6 @@ app.add_api('swagger.yml')
 #Create URL route for "/"
 @app.route('/')
 def home():
-    """
-    This fucntion responds to browser ULR localhost:5000/
-
-    :return:    the rendered template 'home.html'
-    """
     return render_template('home.html')
 
 if __name__ == "__main__":

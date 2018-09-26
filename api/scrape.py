@@ -1,4 +1,4 @@
-import requests, bs4, datetime, json
+import requests, bs4, datetime, json, os
 from pymongo import MongoClient
 
 
@@ -25,7 +25,8 @@ def get_latest_prices():
     return json.dumps(latest_prices)
 
 def post_to_db(post):
-    client = MongoClient('mongo', 27017)
+    mongo = os.environ['MONGO']
+    client = MongoClient(mongo, 27017)
     db = client.sharescraper
     posts = db.posts
 
@@ -33,7 +34,8 @@ def post_to_db(post):
     return result
 
 def get_posts_from_db():
-    client = MongoClient('mongo', 27017)
+    mongo = os.environ['MONGO']
+    client = MongoClient(mongo, 27017)
     db = client.sharescraper
     posts = db.posts
 

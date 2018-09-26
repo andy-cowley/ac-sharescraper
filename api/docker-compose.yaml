@@ -8,7 +8,9 @@ services:
     
     sharescraper-api:
         build: .
-        image: ac-sharescraper
+        image: andycowley/sharescraper-api
         hostname: sharescraper-api
         ports: 
             - '5000:5000'
+        environment:
+            MONGO: mongo
