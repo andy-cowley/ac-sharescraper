@@ -3,22 +3,24 @@ import json, requests, os
 
 app = Flask(__name__)
 
-labels = []
-values = []
 
-api = os.environ['API']
-url = "%s/api/history" % api
-payload = requests.get(url)
-data = json.loads(json.loads(payload.text))
-
-for entry in data['history']:
-    label = entry['update_time']
-    value = entry['total_cashout']
-    labels.append(label)
-    values.append(value)
 
 @app.route('/')
 def chart():
+    labels = []
+    values = []
+
+    api = os.environ['API']
+    url = "%s/api/history" % api
+    payload = requests.get(url)
+    data = json.loads(json.loads(payload.text))
+
+    for entry in data['history']:
+        label = entry['update_time']
+        value = entry['total_cashout']
+        labels.append(label)
+        values.append(value)
+        
     return render_template( 
                             'chart.html', 
                             title="What are your shares worth now?", 

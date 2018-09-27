@@ -87,7 +87,7 @@ spec:
     spec:
       containers:
       - name: sharescraper-ui
-        image: andycowley/sharescraper-ui:1.0
+        image: andycowley/sharescraper-ui:1.1
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
