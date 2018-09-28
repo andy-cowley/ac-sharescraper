@@ -52,3 +52,9 @@ jobs:
             kubectl apply -f ./k8s/sharescraper.yaml
             kubectl rollout status deploy sharescraper-api
         
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - build
+    - deploy
