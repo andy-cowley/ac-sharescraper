@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: sharescraper-api
-        image: andycowley/sharescraper-api
+        image: andycowley/sharescraper-api:VERSION
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
@@ -87,7 +87,7 @@ spec:
     spec:
       containers:
       - name: sharescraper-ui
-        image: andycowley/sharescraper-ui:1.1
+        image: andycowley/sharescraper-ui:VERSION
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -139,7 +139,7 @@ kind: Ingress
 metadata:
   name: ui
   labels:
-    app: ac-shaescraper
+    app: ac-sharescraper
     module: ui
   annotations:
     ingress.kubernetes.io/ssl-redirect: "true"

@@ -39,3 +39,16 @@ jobs:
             docker build -t andycowley/$IMAGE_NAME:$TAG ./api
             docker login -u $DOCKER_USER -p $DOCKER_PWD
             docker push andycowley/$IMAGE_NAME:$TAG
+  deploy:
+    docker:
+      - image: andycowley/k8s-utils:0.1.0
+    steps:
+      - checkout 
+
+      - run:
+          name: Sub tokens in yaml and push to K8s 
+          command: |
+            sed -i -e "s/VERSION/1.1.${CIRCLE_BUILD_NUM}/g" ./k8s/sharescraper.yaml
+            kubectl apply -f ./k8s/sharescraper.yaml
+            kubectl rollout status deploy sharescraper-api
+        
