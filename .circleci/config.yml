@@ -36,7 +36,7 @@ jobs:
           command: |
             export TAG=1.1.${CIRCLE_BUILD_NUM}
             export IMAGE_NAME=sharescraper-ui
-            docker build -t andycowley/$IMAGE_NAME:$TAG ./api
+            docker build -t andycowley/$IMAGE_NAME:$TAG ./ui
             docker login -u $DOCKER_USER -p $DOCKER_PWD
             docker push andycowley/$IMAGE_NAME:$TAG
   deploy:
