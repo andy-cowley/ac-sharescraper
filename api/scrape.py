@@ -39,7 +39,7 @@ def get_posts_from_db():
     db = client.sharescraper
     posts = db.posts
 
-    cursor = posts.find().sort([("_id", -1)]).limit(14)
+    cursor = posts.find().sort([("_id", -1)]).limit(28)
 
     results = []
 
